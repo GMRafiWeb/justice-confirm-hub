@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import VerificationForm from '@/components/VerificationForm';
 import RunnerDetails from '@/components/RunnerDetails';
 import Footer from '@/components/Footer';
+import FloatingActionButton from '@/components/FloatingActionButton';
 import { Card, CardContent } from '@/components/ui/card';
 import { Timer, MapPin, Users } from 'lucide-react';
 
@@ -145,6 +146,7 @@ const Index = () => {
       </main>
 
       <Footer />
+      <FloatingActionButton />
     </div>
   );
 };

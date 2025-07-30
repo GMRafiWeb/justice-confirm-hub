@@ -32,7 +32,7 @@ const VerificationForm = ({ onVerificationSuccess }: VerificationFormProps) => {
   const [error, setError] = useState('');
   const { toast } = useToast();
 
-  // Mock Google Sheets data - replace with actual API call
+  // Mock Google Sheets data - replace with Google Apps Script integration
   const mockRunnerData: RunnerData[] = [
     {
       fullName: "আহমেদ করিম",
@@ -63,8 +63,42 @@ const VerificationForm = ({ onVerificationSuccess }: VerificationFormProps) => {
       paymentNumber: "+8801787654321",
       transactionId: "TX987654321",
       confirmed: "No"
+    },
+    {
+      fullName: "John Doe",
+      email: "john@example.com",
+      phone: "+8801712345678",
+      alternativePhone: "+8801812345678",
+      dateOfBirth: "1990-01-01",
+      address: "Sylhet",
+      gender: "Male",
+      tshirtSize: "M",
+      accommodation: "No",
+      category: "21 KM Half Marathon",
+      paymentNumber: "+8801712345678",
+      transactionId: "TX123456",
+      confirmed: "No"
     }
   ];
+
+  // Google Apps Script integration function
+  const fetchRunnerDataFromSheet = async (searchValue: string): Promise<RunnerData | null> => {
+    // This would integrate with Google Apps Script web app
+    // const GOOGLE_APPS_SCRIPT_URL = process.env.GOOGLE_APPS_SCRIPT_URL;
+    // For now, using mock data
+    try {
+      // Simulate API call to Google Apps Script
+      const foundRunner = mockRunnerData.find(runner => 
+        runner.phone === searchValue || 
+        runner.transactionId === searchValue ||
+        runner.phone.replace(/\+88/, '') === searchValue.replace(/\+88/, '')
+      );
+      return foundRunner || null;
+    } catch (error) {
+      console.error('Error fetching data from Google Sheets:', error);
+      return null;
+    }
+  };
 
   const handleVerification = async () => {
     if (!searchInput.trim()) {
@@ -79,12 +113,9 @@ const VerificationForm = ({ onVerificationSuccess }: VerificationFormProps) => {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Search in mock data - replace with actual Google Sheets API call
-      const foundRunner = mockRunnerData.find(runner => 
-        runner.phone === searchInput || 
-        runner.transactionId === searchInput ||
-        runner.phone.replace(/\+88/, '') === searchInput.replace(/\+88/, '')
-      );
+      // Fetch data using Google Apps Script integration
+      // const foundRunner = await googleSheetsService.fetchRunner(searchInput);
+      const foundRunner = await fetchRunnerDataFromSheet(searchInput);
 
       if (foundRunner) {
         onVerificationSuccess(foundRunner);
